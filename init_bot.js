@@ -56,9 +56,7 @@ client.on('message', message => {
 	if(message.channel.id == "372849205149958166") {
 		gearMod.run(client, message, args);
 	}
-
-	client.emit("guildMemberAdd", message.member);
-
+	
 	officerMod.run(client, message, args);
 });
 
