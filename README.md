@@ -51,3 +51,9 @@ Welcome to the Haaku Bot Git Repository. This bot is tailored to work for the Ha
 * Officers can now lock in the attendance list
 * Changes nicknames no longer causes issues with the attendance list
 * Fixed minor bugs
+
+## Version 0.6
+* Added Events Module to handle PVP events.
+* Gear Module has been added so users can store their gear in the bot to show it off in the server.
+* Added a purge function for officers to be able to bulk-clear a channel.
+* Bot has been changed to JS for better reasons.
