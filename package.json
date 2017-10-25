@@ -1,0 +1,24 @@
+{
+  "name": "momo-js",
+  "version": "1.0.0",
+  "description": "MoMo Bot JS",
+  "main": "init_bot.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JJ173/HaakuBotProject.git"
+  },
+  "author": "JJ173",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/JJ173/HaakuBotProject/issues"
+  },
+  "homepage": "https://github.com/JJ173/HaakuBotProject#readme",
+  "dependencies": {
+    "discord.js": "^11.2.1",
+    "node-opus": "^0.2.7",
+    "sqlite": "^2.8.0"
+  }
+}
