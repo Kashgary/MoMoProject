@@ -23,6 +23,7 @@ let commands = ["!yes", "!no", "!maybe", "!new", "!refresh", "!remind", "!setap"
 client.on('ready', ()=> {
 	console.log("I am ready!");
 	client.user.setGame(`Version 0.6`);
+
 });
 
 client.on('message', message => {
@@ -56,7 +57,18 @@ client.on('message', message => {
 		gearMod.run(client, message, args);
 	}
 
+	client.emit("guildMemberAdd", message.member);
+
 	officerMod.run(client, message, args);
 });
+
+client.on("guildMemberAdd", (member) => {
+	const embed = new Discord.RichEmbed()
+	embed.setTitle(`A new challenger approaches!`);
+	embed.setColor(0xff8040);
+
+	embed.addField("Member Name", `${member.user.username}`, true);
+	embed.setTimestamp();
+})
 
 client.login(config.token);
