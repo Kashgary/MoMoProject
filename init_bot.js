@@ -45,7 +45,7 @@ client.on('message', message => {
 	}
 
 	// Handle Message Filtering
-	if(message.channel.id == "335689011542884352") {
+	if(message.channel.id == "334464352717504523") {
 		nodeMod.run(client, message, args);
 	}
 
@@ -56,7 +56,7 @@ client.on('message', message => {
 	if(message.channel.id == "372849205149958166") {
 		gearMod.run(client, message, args);
 	}
-	
+
 	officerMod.run(client, message, args);
 });
 

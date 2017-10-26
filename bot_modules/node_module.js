@@ -32,6 +32,12 @@ function removeFromArray(array, element) {
 }
 
 function refreshList(message, channel) {
+	message.channel.fetchMessages({
+		limit: 100,
+	}).then((messages) => {
+		message.channel.bulkDelete(messages).catch(error => console.log(error.stack));
+	});
+
 	channel.send({embed: {
 		color: 0xff8040,
 		author: {
@@ -265,7 +271,7 @@ exports.run = (client, message, args) => {
 			var members = message.guild.members;
 
 			members.forEach(function(member) {
-				if(member.roles.some(r=>["Leader", "Officer", "Member", "ADMIN"].includes(r.name))) {
+				if(member.roles.some(r=>["Leader", "Officer", "Member"].includes(r.name))) {
 					if(member.nickname == undefined) {
 						missingList.push(member.user.username);
 					} else {

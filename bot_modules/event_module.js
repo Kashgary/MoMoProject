@@ -10,6 +10,12 @@ usersAttending = 0;
 userNames = [];
 
 function refresh(message, channel) {
+	message.channel.fetchMessages({
+		limit: 100,
+	}).then((messages) => {
+		message.channel.bulkDelete(messages).catch(error => console.log(error.stack));
+	});
+	
 	const embed = new Discord.RichEmbed()
 	embed.setTitle("PVP Roster")
 	embed.setColor(0xff8040)

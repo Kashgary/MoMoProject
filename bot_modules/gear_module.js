@@ -25,7 +25,11 @@ exports.run = (client, message, args) => {
 				embed.setAuthor(`${message.author.username}`, message.author.avatarURL);
 				embed.setTitle(`Gear Display`);
 				embed.setColor(0xff8040)
-				embed.setDescription(`Level: **${row.LEVEL}** \nGear Score: **${row.AP + row.DP + row.AWAP}**`); // Add AP/DP together here.
+				if(row.AP > row.AWAP) {
+					embed.setDescription(`Level: **${row.LEVEL}** \nGear Score: **${row.AP + row.DP}**`); // Add AP/DP together here.
+				} else {
+					embed.setDescription(`Level: **${row.LEVEL}** \nGear Score: **${row.AWAP + row.DP}**`); // Add AWAP/DP together here.
+				}
 
 				embed.addField("AP", `${row.AP}`, true);
 				embed.addField("Awakened AP", `${row.AWAP}`, true);
@@ -46,11 +50,15 @@ exports.run = (client, message, args) => {
 			});
 		} else {
 			sql.get(`SELECT * FROM members WHERE userId = "${member.id}"`).then(row=> {
-				const embed = new Discord.RichEmbed()
+				const embed = new Discord.RichEmbed();
 				embed.setAuthor(`${member.user.username}`, member.user.avatarURL);
 				embed.setTitle(`Gear Display`);
 				embed.setColor(0xff8040)
-				embed.setDescription(`Level: **${row.LEVEL}** \nGear Score: **${row.AP + row.DP + row.AWAP}**`); // Add AP/DP together here.
+				if(row.AP > row.AWAP) {
+					embed.setDescription(`Level: **${row.LEVEL}** \nGear Score: **${row.AP + row.DP}**`); // Add AP/DP together here.
+				} else {
+					embed.setDescription(`Level: **${row.LEVEL}** \nGear Score: **${row.AWAP + row.DP}**`); // Add AWAP/DP together here.
+				}
 
 				embed.addField("AP", `${row.AP}`, true);
 				embed.addField("Awakened AP", `${row.AWAP}`, true);
