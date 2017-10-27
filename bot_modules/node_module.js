@@ -141,32 +141,32 @@ function removeFromList(list1, list2, list3, name) {
 	} 
 }
 
-function updateList(list1, list2, list3, user) {
+function updateList(list1, list2, list3, member) {
 	if(list1 == aMemberList) {
-		if (user.nickname == undefined) {
-			aMemberList.push(user.username);
-			removeFromList(naMemberList, mMemberList, missingList, user.username);
+		if (member.nickname == undefined) {
+			aMemberList.push(member.user.username);
+			removeFromList(naMemberList, mMemberList, missingList, member.user.username);
 		} else {
-			aMemberList.push(user.nickname);
-			removeFromList(naMemberList, mMemberList, missingList, user.nickname);
+			aMemberList.push(member.nickname);
+			removeFromList(naMemberList, mMemberList, missingList, member.nickname);
 		}
 		aMemberCount += 1
 	} else if(list1 == mMemberList) {
-		if (user.nickname == undefined) {
-			mMemberList.push(user.username);
-			removeFromList(aMemberList, naMemberList, missingList, user.username);
+		if (member.nickname == undefined) {
+			mMemberList.push(member.user.username);
+			removeFromList(aMemberList, naMemberList, missingList, member.user.username);
 		} else {
-			mMemberList.push(user.nickname);
-			removeFromList(aMemberList, naMemberList, missingList, user.nickname);
+			mMemberList.push(member.nickname);
+			removeFromList(aMemberList, naMemberList, missingList, member.nickname);
 		}
 		mMemberCount += 1
 	} else if(list1 == naMemberList) {
-		if (user.nickname == undefined) {
-			naMemberList.push(user.username);
-			removeFromList(aMemberList, mMemberList, missingList, user.username);
+		if (member.nickname == undefined) {
+			naMemberList.push(member.user.username);
+			removeFromList(aMemberList, mMemberList, missingList, member.user.username);
 		} else {
-			naMemberList.push(user.nickname);
-			removeFromList(aMemberList, mMemberList, missingList, user.nickname);
+			naMemberList.push(member.nickname);
+			removeFromList(aMemberList, mMemberList, missingList, member.nickname);
 		}
 		naMemberCount += 1
 	}
@@ -176,21 +176,21 @@ exports.run = (client, message, args) => {
 	if(message.author.bot) return;
 
 	if(message.content.startsWith(prefix + "yes")) {
-		if(aMemberList.indexOf(message.member.username) > -1 || aMemberList.indexOf(message.member.nickname) > -1) return;
+		if(aMemberList.indexOf(message.member.user.username) > -1 || aMemberList.indexOf(message.member.nickname) > -1) return;
 
 		updateList(aMemberList, mMemberList, naMemberList, message.member);
 		refreshList(message, message.channel);
 	}
 
 	if(message.content.startsWith(prefix + "maybe")) {
-		if(mMemberList.indexOf(message.member.username) > -1 || mMemberList.indexOf(message.member.nickname) > -1) return;
+		if(mMemberList.indexOf(message.member.user.username) > -1 || mMemberList.indexOf(message.member.nickname) > -1) return;
 
 		updateList(mMemberList, aMemberList, naMemberList, message.member);
 		refreshList(message, message.channel);
 	}
 
 	if(message.content.startsWith(prefix + "no")) {
-		if(naMemberList.indexOf(message.member.username) > -1 || naMemberList.indexOf(message.member.nickname) > -1) return;
+		if(naMemberList.indexOf(message.member.user.username) > -1 || naMemberList.indexOf(message.member.nickname) > -1) return;
 
 		updateList(naMemberList, aMemberList, mMemberList, message.member);
 		refreshList(message, message.channel);
@@ -205,7 +205,7 @@ exports.run = (client, message, args) => {
 		let member = message.mentions.members.first();
 
 		if(message.member.roles.some(r=>["Leader", "Officer", "ADMIN"].includes(r.name))) {
-			if(aMemberList.indexOf(member.username) > -1) {
+			if(aMemberList.indexOf(member.user.username) > -1) {
 				return message.reply("User is already in that list!");
 			} else if(aMemberList.indexOf(member.nickname) > -1) {
 				return message.reply("User is already in that list!");
@@ -221,10 +221,8 @@ exports.run = (client, message, args) => {
 	if(message.content.startsWith(prefix + "force_no")) {
 		let member = message.mentions.members.first();
 
-		console.log(member.nickname);
-
 		if(message.member.roles.some(r=>["Leader", "Officer", "ADMIN"].includes(r.name))) {
-			if(naMemberList.indexOf(member.username) > -1) {
+			if(naMemberList.indexOf(member.user.username) > -1) {
 				return message.reply("User is already in that list!");
 			} else if(naMemberList.indexOf(member.nickname) > -1) {
 				return message.reply("User is already in that list!");
@@ -245,7 +243,7 @@ exports.run = (client, message, args) => {
 		if(message.member.roles.some(r=>["Leader", "Officer", "ADMIN"].includes(r.name))) {
 			members.forEach(function(member) {
 				if(member.roles.some(r=>["Leader", "Officer", "Member"].includes(r.name))) {
-					if(missingList.indexOf(member.username) > -1 || missingList.indexOf(member.nickname) > -1) {
+					if(missingList.indexOf(member.user.username) > -1 || missingList.indexOf(member.nickname) > -1) {
 						member.send(`${reminder} - ${message.author.username}`);
 					}
 				}
