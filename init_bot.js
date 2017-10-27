@@ -22,7 +22,7 @@ let commands = ["!yes", "!no", "!maybe", "!new", "!refresh", "!remind", "!setap"
 
 client.on('ready', ()=> {
 	console.log("I am ready!");
-	client.user.setGame(`Version 0.6`);
+	client.user.setGame(`Version 0.6.1b`);
 
 });
 

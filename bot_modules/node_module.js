@@ -245,7 +245,7 @@ exports.run = (client, message, args) => {
 		if(message.member.roles.some(r=>["Leader", "Officer", "ADMIN"].includes(r.name))) {
 			members.forEach(function(member) {
 				if(member.roles.some(r=>["Leader", "Officer", "Member"].includes(r.name))) {
-					if(missingList.indexOf(member.username) > -1 || missingList.indexOf(member.nickname)) {
+					if(missingList.indexOf(member.username) > -1 || missingList.indexOf(member.nickname) > -1) {
 						member.send(`${reminder} - ${message.author.username}`);
 					}
 				}
