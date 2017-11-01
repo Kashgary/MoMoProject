@@ -2,6 +2,13 @@
 
 Welcome to the Haaku Bot Git Repository. This bot is tailored to work for the Haaku Discord Server.
 
+# Contributing
+If you wish to contribute to MoMo, you can do so by talking to Vedu or JJ. When contributing, please make sure that this repository is kept up-to-date with the latest features that you have developed. Please upload any changes you wish to make via a Pull Request with a description of what the feature does. Pull Requests will be reviewed and merged once approved by JJ or Vedu. If you have any issues with the bot, please post an issue so we can fix it.
+
+Anyone who has any suggestions or ideas can PM JJ on Discord.
+
+# Change Log
+
 ## Version 0.1
 * Added basic bot features
 * Added attendance features
