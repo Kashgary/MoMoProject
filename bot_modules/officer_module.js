@@ -9,6 +9,7 @@ const prefix = config.prefix;
 let officerRoles = ["Leader", "Officer", "ADMIN"];
 
 exports.run = (client, message, args) => {
+	if(!message.member) return;
 	if(!message.member.roles.some(r=>officerRoles.includes(r.name))) return;
 	if(message.author.bot) return;
 
