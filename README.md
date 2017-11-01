@@ -7,6 +7,34 @@ If you wish to contribute to MoMo, you can do so by talking to Vedu or JJ. When 
 
 Anyone who has any suggestions or ideas can PM JJ on Discord.
 
+## Installing and Developing
+To develop for MoMo, you'll need to setup your own development environment.
+
+First, you'll need to install:
+* https://nodejs.org/en/
+
+Once installed, create a directory for MoMo and clone this repository. You'll need to create a config file in order to run the bot. The config file will follow this structure:
+
+```
+{
+  "token": "bot_token_here",
+  "prefix": "!",
+  "ownerID": "your_discord_id"
+}
+```
+
+Open up the Node Command Prompt and type `cd path_to_your_momo_directory`. Then, you'll need to install a few prerequisites before launching the bot.
+
+Once you've navigated to your development environment, type these commands in to your Node Command Prompt (Node may ask for your permission to install these modules):
+* npm install --save discord.js
+* npm install sqlite --save
+
+When Node has finished installing these modules, you can test the bot by putting your bot token in your config file and typing `node init_bot.js` in to your Node Command Prompt. 
+
+If you don't know how to create a Discord Bot application, please research it here: https://twentysix26.github.io/Red-Docs/red_guide_bot_accounts/
+
+If there are any issues, or you're struggling to understand this guide, please let us know.
+
 # Change Log
 
 ## Version 0.1
