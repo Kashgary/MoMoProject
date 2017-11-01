@@ -24,7 +24,7 @@ naMemberCount = 0;
 missingCount = 0;
 
 function removeFromArray(array, element) {
-	const index = array.indexOf(element); 
+	const index = array.indexOf(element);
 
 	if(index !== -1) {
 		array.splice(index, 1);
@@ -47,7 +47,7 @@ function refreshList(message, channel) {
 		title: `Node War Attendance`,
 		description: "Please sign up for Node Wars using !yes, !no or !maybe.",
 		fields: [{
-				name: `Attending`, 
+				name: `Attending`,
 				value: `${aMemberCount}`,
 				inline: true
 			},
@@ -138,7 +138,7 @@ function removeFromList(list1, list2, list3, name) {
 		} else if(list3 == missingList) {
 			missingCount--;
 		}
-	} 
+	}
 }
 
 function updateList(list1, list2, list3, member) {
@@ -210,8 +210,25 @@ exports.run = (client, message, args) => {
 			} else if(aMemberList.indexOf(member.nickname) > -1) {
 				return message.reply("User is already in that list!");
 			}
-			
+
 			updateList(aMemberList, mMemberList, naMemberList, member);
+			refreshList(message, message.channel);
+		} else {
+			return message.reply("You do not have permission to do that.");
+		}
+	}
+
+	if(message.content.startsWith(prefix + "force_maybe")) {
+		let member = message.mentions.members.first();
+
+		if(message.member.roles.some(r=>["Leader", "Officer", "ADMIN"].includes(r.name))) {
+			if(mMemberList.indexOf(member.user.username) > -1) {
+				return message.reply("User is already in that list!");
+			} else if(mMemberList.indexOf(member.nickname) > -1) {
+				return message.reply("User is already in that list!");
+			}
+
+			updateList(mMemberList, naMemberList, aMemberList, member);
 			refreshList(message, message.channel);
 		} else {
 			return message.reply("You do not have permission to do that.");
@@ -227,7 +244,7 @@ exports.run = (client, message, args) => {
 			} else if(naMemberList.indexOf(member.nickname) > -1) {
 				return message.reply("User is already in that list!");
 			}
-			
+
 			updateList(naMemberList, mMemberList, aMemberList, member);
 			refreshList(message, message.channel);
 		} else {
