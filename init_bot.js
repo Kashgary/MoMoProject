@@ -10,7 +10,7 @@ const prefix = config.prefix;
 
 // SQLLite
 const sql = require("sqlite");
-sql.open("./members.sqlite");
+sql.open("/momo/members.sqlite");
 
 // Modules
 let nodeMod = require('./bot_modules/node_module.js');
