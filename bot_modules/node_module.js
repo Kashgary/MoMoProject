@@ -3,13 +3,6 @@ const Discord = require('discord.js');
 const fs = require("fs");
 const config = require('../json/config.json');
 
-// SQLLite
-const sql = require("sqlite");
-sql.open("./members.sqlite");
-
-// Store the list if we crash.
-sql.open("list.sqlite");
-
 // Variables
 const prefix = config.prefix;
 

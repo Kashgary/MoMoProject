@@ -5,7 +5,7 @@ const config = require('../json/config.json');
 
 // SQLLite
 const sql = require("sqlite");
-sql.open("./members.sqlite");
+sql.open("/momo/members.sqlite");
 
 // Variables
 const prefix = config.prefix;

@@ -8,9 +8,20 @@ const config = require('./json/config.json');
 // Variables
 const prefix = config.prefix;
 
+// Create datadirectory
+const data_dir = "/momo"
+try {
+	fs.mkdirSync("/momo")
+}
+catch (err) {
+	if(err.code !== 'EEXIST') {
+		throw err;
+	}
+}
+
 // SQLLite
 const sql = require("sqlite");
-sql.open("./members.sqlite");
+sql.open("/momo/members.sqlite");
 
 // Modules
 let nodeMod = require('./bot_modules/node_module.js');
