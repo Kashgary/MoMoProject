@@ -9,12 +9,15 @@ const prefix = config.prefix;
 usersAttending = 0;
 userNames = [];
 
-function refresh(message, channel) {
+function refresh(message, channel, newRoster=false) {
 	message.channel.fetchMessages({
 		limit: 100,
 	}).then((messages) => {
 		message.channel.bulkDelete(messages).catch(error => console.log(error.stack));
 	});
+
+	if(newRoster)
+		message.channel.send("A new event has started! Please sign-up by typing `+`. If you need additional information, please inform an Officer.");
 	
 	const embed = new Discord.RichEmbed()
 	embed.setTitle("PVP Roster")
@@ -23,7 +26,7 @@ function refresh(message, channel) {
 
 	embed.addField("Roster Count", `${usersAttending}`, true);
 
-	if(userNames.length == 0) {
+	if(userNames.length <= 0) {
 		embed.addField("Registered Users", `Nobody`, true);
 	} else {
 		embed.addField("Registered Users", `${userNames.map(g => g).join("\n")}`, true);
@@ -43,8 +46,7 @@ exports.run = (client, message, args) => {
 			usersAttending = 0;
 			userNames = [];
 
-			message.channel.send("A new event has started! Please sign-up by typing `+`. If you need additional information, please inform an Officer.");
-			refresh(message, message.channel);
+			refresh(message, message.channel, true);
 		}
 	}
 
@@ -52,7 +54,7 @@ exports.run = (client, message, args) => {
 		if(userNames.indexOf(message.member.username) > -1 || userNames.indexOf(message.member.nickname) > -1) return;
 
 		if(message.member.nickname == undefined) {
-			userNames.push(message.member.username);
+			userNames.push(message.member.user.username);
 		} else {
 			userNames.push(message.member.nickname);
 		}

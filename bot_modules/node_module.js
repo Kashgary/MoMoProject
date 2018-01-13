@@ -2,9 +2,18 @@
 const Discord = require('discord.js');
 const fs = require("fs");
 const config = require('../json/config.json');
+const dateFormat = require('dateFormat');
+
+// SQLLite
+const sql = require("sqlite");
+sql.open("./members.sqlite");
+
+// Store the list if we crash.
+sql.open("list.sqlite");
 
 // Variables
 const prefix = config.prefix;
+let warDate;
 
 aMemberList = [];
 mMemberList = [];
@@ -17,7 +26,7 @@ naMemberCount = 0;
 missingCount = 0;
 
 function removeFromArray(array, element) {
-	const index = array.indexOf(element);
+	const index = array.indexOf(element); 
 
 	if(index !== -1) {
 		array.splice(index, 1);
@@ -37,10 +46,10 @@ function refreshList(message, channel) {
 			name: `MoMo Bot`,
 			icon_url: message.guild.iconURL
 		},
-		title: `Node War Attendance`,
+		title: `Node War Attendance - ${warDate}`,
 		description: "Please sign up for Node Wars using !yes, !no or !maybe.",
 		fields: [{
-				name: `Attending`,
+				name: `Attending`, 
 				value: `${aMemberCount}`,
 				inline: true
 			},
@@ -131,7 +140,7 @@ function removeFromList(list1, list2, list3, name) {
 		} else if(list3 == missingList) {
 			missingCount--;
 		}
-	}
+	} 
 }
 
 function updateList(list1, list2, list3, member) {
@@ -203,25 +212,8 @@ exports.run = (client, message, args) => {
 			} else if(aMemberList.indexOf(member.nickname) > -1) {
 				return message.reply("User is already in that list!");
 			}
-
+			
 			updateList(aMemberList, mMemberList, naMemberList, member);
-			refreshList(message, message.channel);
-		} else {
-			return message.reply("You do not have permission to do that.");
-		}
-	}
-
-	if(message.content.startsWith(prefix + "force_maybe")) {
-		let member = message.mentions.members.first();
-
-		if(message.member.roles.some(r=>["Leader", "Officer", "ADMIN"].includes(r.name))) {
-			if(mMemberList.indexOf(member.user.username) > -1) {
-				return message.reply("User is already in that list!");
-			} else if(mMemberList.indexOf(member.nickname) > -1) {
-				return message.reply("User is already in that list!");
-			}
-
-			updateList(mMemberList, naMemberList, aMemberList, member);
 			refreshList(message, message.channel);
 		} else {
 			return message.reply("You do not have permission to do that.");
@@ -237,7 +229,7 @@ exports.run = (client, message, args) => {
 			} else if(naMemberList.indexOf(member.nickname) > -1) {
 				return message.reply("User is already in that list!");
 			}
-
+			
 			updateList(naMemberList, mMemberList, aMemberList, member);
 			refreshList(message, message.channel);
 		} else {
@@ -265,33 +257,45 @@ exports.run = (client, message, args) => {
 
 	if(message.content.startsWith(prefix + "new")) {
 		if(message.member.roles.some(r=>["Leader", "Officer", "ADMIN"].includes(r.name))) {
-			aMemberCount = 0;
-			naMemberCount = 0;
-			mMemberCount = 0;
-			missingCount = 0;
+			dateArg = new Date(args[1]);
 
-			aMemberList = [];
-			mMemberList = [];
-			naMemberList = [];
-			missingList = [];
-
-			// Add all of the users to the missing list.
-			var members = message.guild.members;
-
-			members.forEach(function(member) {
-				if(member.roles.some(r=>["Leader", "Officer", "Member"].includes(r.name))) {
-					if(member.nickname == undefined) {
-						missingList.push(member.user.username);
-					} else {
-						missingList.push(member.nickname);
-					}
-					missingCount += 1;
+			if(!dateArg) {
+				return message.reply("You must set a date for the Node War.");
+			} else {
+				// Check if the date provided is valid.
+				if(isNaN(dateArg.getTime())) {
+					return message.reply("You must specify a valid date. Example: `02-07-1996`.");
 				} else {
-					return;
-				}
-			});
+					warDate = dateFormat(dateArg, "dddd, mmmm dS, yyyy");
 
-			refreshList(message, message.channel);
+					aMemberCount = 0;
+					naMemberCount = 0;
+					mMemberCount = 0;
+					missingCount = 0;
+
+					aMemberList = [];
+					mMemberList = [];
+					naMemberList = [];
+					missingList = [];
+
+					// Add all of the users to the missing list.
+					var members = message.guild.members;
+
+					members.forEach(function(member) {
+						if(member.roles.some(r=>["Leader", "Officer", "Member"].includes(r.name))) {
+							if(member.nickname == undefined) {
+								missingList.push(member.user.username);
+							} else {
+								missingList.push(member.nickname);
+							}
+							missingCount += 1;
+						} else {
+							return;
+						}
+					});
+					refreshList(message, message.channel);
+				}
+			}
 		} else {
 			return message.reply("You do not have permission to do that.");
 		}
