@@ -2,7 +2,7 @@
 const Discord = require('discord.js');
 const fs = require("fs");
 const config = require('../json/config.json');
-const dateFormat = require('dateFormat');
+const dateFormat = require('dateformat');
 
 // SQLLite
 const sql = require("sqlite");
@@ -214,6 +214,23 @@ exports.run = (client, message, args) => {
 			}
 			
 			updateList(aMemberList, mMemberList, naMemberList, member);
+			refreshList(message, message.channel);
+		} else {
+			return message.reply("You do not have permission to do that.");
+		}
+	}
+
+	if(message.content.startsWith(prefix + "force_maybe")) {
+		let member = message.mentions.members.first();
+
+		if(message.member.roles.some(r=>["Leader", "Officer", "ADMIN"].includes(r.name))) {
+			if(mMemberList.indexOf(member.user.username) > -1) {
+				return message.reply("User is already in that list!");
+			} else if(mMemberList.indexOf(member.nickname) > -1) {
+				return message.reply("User is already in that list!");
+			}
+ 
+			updateList(mMemberList, naMemberList, aMemberList, member);
 			refreshList(message, message.channel);
 		} else {
 			return message.reply("You do not have permission to do that.");
