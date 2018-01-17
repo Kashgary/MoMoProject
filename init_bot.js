@@ -8,20 +8,9 @@ const config = require('./json/config.json');
 // Variables
 const prefix = config.prefix;
 
-// Create datadirectory
-const data_dir = "/momo"
-try {
-	fs.mkdirSync("/momo")
-}
-catch (err) {
-	if(err.code !== 'EEXIST') {
-		throw err;
-	}
-}
-
 // SQLLite
 const sql = require("sqlite");
-sql.open("/momo/members.sqlite");
+sql.open("./members.sqlite");
 
 // Modules
 let nodeMod = require('./bot_modules/node_module.js');
@@ -78,6 +67,31 @@ client.on("guildMemberAdd", (member) => {
 
 	embed.addField("Member Name", `${member.user.username}`, true);
 	embed.setTimestamp();
-})
+
+	member.addRole(member.guild.roles.find("name", "Guests"));
+});
+
+/*client.on("guildMemberUpdate", (oldMember, newMember) => {
+	// Get some list references from the Node War Module.
+	let attendingList = aMemberList;
+	let mayAttendList = nodeMod.mMemberList;
+	let notAttendingList = nodeMod.naMemberList;
+	let missingList = nodeMod.missingList;
+
+	// Run a check to see if the old user is in a list.
+	if(missingList.indexOf(oldMember.user.username) > -1 || missingList.indexOf(oldMember.nickname) > -1) {
+
+	} else if(notAttendingList.indexOf(oldMember.user.username) > -1 || notAttendingList.indexOf(oldMember.nickname) > -1) {
+
+	} else if(mayAttendList.indexOf(oldMember.user.username) > -1 || mayAttendList.indexOf(oldMember.nickname) > -1) {
+
+	} else if(attendingList.indexOf(oldMember.user.username) > -1 || attendingList.indexOf(oldMember.nickname) > -1) {
+
+	}
+})*/
+
+client.on("error", (e) => console.error(e));
+client.on("warn", (e) => console.warn(e));
+client.on("debug", (e) => console.info(e));
 
 client.login(config.token);

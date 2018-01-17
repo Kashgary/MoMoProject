@@ -25,6 +25,30 @@ mMemberCount = 0;
 naMemberCount = 0;
 missingCount = 0;
 
+let DateCheckInterval;
+let DateCheckIntervalTimer = 43200;
+let bDateCheckReminder = false;
+
+function runTickOnDateCheckFunc(members) {
+	let now = new Date();
+
+	let today = dateFormat(now, "dddd, mmmm dS, yyyy");
+
+	console.log(`warDate variable set to: ${warDate}`);
+	console.log(`Today variable set to: ${today}`);
+
+	if(today == warDate) {
+		if(!bDateCheckReminder) {
+			members.forEach(function(member) {
+				if(missingList.indexOf(member.user.username) > -1 || missingList.indexOf(member.nickname) > -1) {
+					member.send("Hey there! It looks like you've not signed up for the latest Node War. Please let us know if you're going to attend.");
+				}
+			});
+			bDateCheckReminder = true;
+		}
+	}
+}
+
 function removeFromArray(array, element) {
 	const index = array.indexOf(element); 
 
@@ -281,7 +305,7 @@ exports.run = (client, message, args) => {
 			} else {
 				// Check if the date provided is valid.
 				if(isNaN(dateArg.getTime())) {
-					return message.reply("You must specify a valid date. Example: `02-07-1996`.");
+					return message.reply("You must specify a valid date. Example: `02/07/1996`.");
 				} else {
 					warDate = dateFormat(dateArg, "dddd, mmmm dS, yyyy");
 
@@ -298,8 +322,13 @@ exports.run = (client, message, args) => {
 					// Add all of the users to the missing list.
 					var members = message.guild.members;
 
+					clearInterval(DateCheckInterval);
+					DateCheckInterval = setInterval(runTickOnDateCheckFunc, DateCheckIntervalTimer);
+					DateCheckReminderBool = false;
+
+
 					members.forEach(function(member) {
-						if(member.roles.some(r=>["Leader", "Officer", "Member"].includes(r.name))) {
+						if(member.roles.some(r=>["Leader", "Officer", "Member", 'ADMIN'].includes(r.name))) {
 							if(member.nickname == undefined) {
 								missingList.push(member.user.username);
 							} else {
