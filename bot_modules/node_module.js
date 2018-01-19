@@ -323,12 +323,11 @@ exports.run = (client, message, args) => {
 					var members = message.guild.members;
 
 					clearInterval(DateCheckInterval);
-					DateCheckInterval = setInterval(runTickOnDateCheckFunc, DateCheckIntervalTimer);
-					DateCheckReminderBool = false;
-
+					DateCheckInterval = setInterval(runTickOnDateCheckFunc, DateCheckIntervalTimer, members);
+					bDateCheckReminder = false;
 
 					members.forEach(function(member) {
-						if(member.roles.some(r=>["Leader", "Officer", "Member", 'ADMIN'].includes(r.name))) {
+						if(member.roles.some(r=>["Leader", "Officer", "Member"].includes(r.name))) {
 							if(member.nickname == undefined) {
 								missingList.push(member.user.username);
 							} else {
