@@ -18,7 +18,7 @@ let gearMod = require('./bot_modules/gear_module.js');
 let eventMod = require('./bot_modules/event_module.js');
 let officerMod = require('./bot_modules/officer_module.js');
 
-let commands = ["!yes", "!no", "!maybe", "!new", "!refresh", "!remind", "!setap", "!setdp", "!setacc", "!setlvl", "!setimg", "!setawap", "!gear"];
+let commands = ["!setap", "!setdp", "!setacc", "!setlvl", "!setimg", "!setawap", "!gear"];
 
 client.on('ready', ()=> {
 	console.log("I am ready!");
@@ -45,15 +45,15 @@ client.on('message', message => {
 	}
 
 	// Handle Message Filtering
-	if(message.channel.id == "334464352717504523") {
+	if(message.channel.id == "") {
 		nodeMod.run(client, message, args);
 	}
 
-	if(message.channel.id == "334446381098074112") {
+	if(message.channel.id == "") {
 		eventMod.run(client, message, args);
 	}
 
-	if(message.channel.id == "372849205149958166") {
+	if(message.channel.id == "425767790226440192") {
 		gearMod.run(client, message, args);
 	}
 
@@ -94,4 +94,4 @@ client.on("error", (e) => console.error(e));
 client.on("warn", (e) => console.warn(e));
 client.on("debug", (e) => console.info(e));
 
-client.login(config.token);
+client.login(process.env.BOT_TOKEN);
