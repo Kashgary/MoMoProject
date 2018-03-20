@@ -1,0 +1,14 @@
+
+{
+  "name": "MoMo",
+  "description": "Test",
+  "version": "0.0.0",
+  "main": "init_bot.js",
+  "scripts": {
+    "start": "init_bot.js"
+  },
+  "dependencies": {
+    "discord.js": "11.1.0",
+    "request": "2.81.0"
+  }
+}
